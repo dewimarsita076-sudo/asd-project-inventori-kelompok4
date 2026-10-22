@@ -26,3 +26,10 @@ def menu_update_stok():
     stok_baru = input("Stok baru    : ")
     _, pesan = produk.update_stok_produk(kode, stok_baru)
     print(pesan)
+
+def menu_update_harga():
+    print("\n=== Update Harga Produk ===")
+    kode = input("Kode produk     : ")
+    harga_baru = input("Harga baru (Rp) : ")
+    _, pesan = produk.update_harga_produk(kode, harga_baru)
+    print(pesan)
