@@ -80,6 +80,53 @@ def tambah_produk(kode_produk, nama, kategori, harga, stok):
     })
     return True, f"Produk {nama} berhasil ditambahkan."
 
+
+# ---------------------------------------------------------------------------
+# F2: Tampilkan semua produk
+# ---------------------------------------------------------------------------
+def tampilkan_semua_produk():
+    """Return string tabel semua produk, atau pesan jika data kosong."""
+    if not daftar_produk:
+        return "Belum ada produk yang tersimpan."
+
+    # Siapkan baris data (sudah dalam bentuk teks)
+    baris = []
+    for no, p in enumerate(daftar_produk, start=1):
+        baris.append((
+            str(no),
+            p["kode_produk"],
+            p["nama"],
+            p["kategori"],
+            format_rupiah(p["harga"]),
+            str(p["stok"]),
+        ))
+
+    header = ("No", "Kode", "Nama", "Kategori", "Harga", "Stok")
+
+    # Lebar kolom menyesuaikan teks terpanjang di tiap kolom
+    lebar = [
+        max(len(header[i]), *(len(b[i]) for b in baris))
+        for i in range(len(header))
+    ]
+
+    def format_baris(isi):
+        # No & Stok rata kanan, Harga rata kanan, sisanya rata kiri
+        kolom = [
+            isi[0].rjust(lebar[0]),
+            isi[1].ljust(lebar[1]),
+            isi[2].ljust(lebar[2]),
+            isi[3].ljust(lebar[3]),
+            isi[4].rjust(lebar[4]),
+            isi[5].rjust(lebar[5]),
+        ]
+        return " | ".join(kolom)
+
+    garis = "-+-".join("-" * l for l in lebar)
+
+    hasil = [format_baris(header), garis]
+    hasil.extend(format_baris(b) for b in baris)
+    return "\n".join(hasil)
+
 # ---------------------------------------------------------------------------
 # F4: Update stok produk
 # ---------------------------------------------------------------------------
