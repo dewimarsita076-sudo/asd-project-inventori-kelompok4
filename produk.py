@@ -104,3 +104,35 @@ def update_stok_produk(kode, stok_baru):
     produk["stok"] = stok_baru
 
     return True, f"Stok produk {nama} berhasil diperbarui: {stok_lama} menjadi {stok_baru}"
+
+# ---------------------------------------------------------------------------
+# Fitur 5: Update harga produk
+# ---------------------------------------------------------------------------
+def update_harga_produk(kode_produk, harga_baru_teks):
+    """
+    Memperbarui harga produk berdasarkan kode_produk.
+    Return (status_sukses, pesan).
+    """
+    kode = kode_produk.strip()
+    
+    # 1. Validasi keberadaan kode produk
+    index = cari_index_by_kode(kode)
+    if index == -1:
+        return False, f"Produk dengan kode '{kode}' tidak ditemukan."
+    
+    # 2. Validasi input harga baru
+    harga_baru, error = parse_harga(harga_baru_teks)
+    if error:
+        return False, error
+    
+    # 3. Simpan harga lama lalu perbarui ke harga baru
+    item = daftar_produk[index]
+    harga_lama = item["harga"]
+    item["harga"] = harga_baru
+    
+    # 4. Format pesan output sukses
+    pesan_sukses = (
+        f"Harga produk {item['nama']} berhasil diperbarui: "
+        f"{format_rupiah(harga_lama)} menjadi {format_rupiah(harga_baru)}"
+    )
+    return True, pesan_sukses
