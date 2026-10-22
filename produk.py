@@ -79,3 +79,28 @@ def tambah_produk(kode_produk, nama, kategori, harga, stok):
         "stok": stok,
     })
     return True, f"Produk {nama} berhasil ditambahkan."
+
+# ---------------------------------------------------------------------------
+# F4: Update stok produk
+# ---------------------------------------------------------------------------
+def update_stok_produk(kode, stok_baru):
+    """Update stok produk berdasarkan kode. Return (berhasil, pesan)."""
+    kode = kode.strip()
+
+    if not kode:
+        return False, "Kode produk tidak boleh kosong"
+
+    index = cari_index_by_kode(kode)
+    if index == -1:
+        return False, f"Produk dengan kode '{kode}' tidak ditemukan"
+
+    stok_baru, error = parse_stok(stok_baru)
+    if error:
+        return False, error
+
+    produk = daftar_produk[index]
+    stok_lama = produk["stok"]
+    nama = produk["nama"]
+    produk["stok"] = stok_baru
+
+    return True, f"Stok produk {nama} berhasil diperbarui: {stok_lama} menjadi {stok_baru}"

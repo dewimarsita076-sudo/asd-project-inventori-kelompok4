@@ -19,4 +19,10 @@ def menu_cari_produk():
     print("1. Berdasarkan kode (exact match)")
     print("2. Berdasarkan nama (partial match)")
     mode = input("Pilih mode pencarian (1/2): ").strip()
-    
+
+def menu_update_stok():
+    print("\n=== Update Stok Produk ===")
+    kode = input("Kode produk  : ")
+    stok_baru = input("Stok baru    : ")
+    _, pesan = produk.update_stok_produk(kode, stok_baru)
+    print(pesan)
