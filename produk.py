@@ -184,3 +184,20 @@ def update_harga_produk(kode_produk, harga_baru_teks):
     )
     return True, pesan_sukses
 
+# ---------------------------------------------------------------------------
+# F6: Hapus produk (dua langkah: ambil nama dulu, lalu hapus setelah konfirmasi)
+# ---------------------------------------------------------------------------
+def ambil_nama_produk(kode):
+    """Return nama produk untuk ditampilkan sebelum konfirmasi, atau None jika tidak ada."""
+    index = cari_index_by_kode(kode)
+    if index == -1:
+        return None
+    return daftar_produk[index]["Nama"]
+
+def hapus_produk(kode):
+    """Hapus produk dari list. Return (sukses, pesan)."""
+    index = cari_index_by_kode(kode)
+    if index == -1:
+        return False, f"Produk dengan kode '{kode.strip()}' tidak ditemukan."
+    produk = daftar_produk.pop(index)
+    return True, f"Produk {produk['nama']} berhasil dihapus dari sistem."
