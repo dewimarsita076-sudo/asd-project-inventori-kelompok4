@@ -33,3 +33,22 @@ def menu_update_harga():
     harga_baru = input("Harga baru (Rp) : ")
     _, pesan = produk.update_harga_produk(kode, harga_baru)
     print(pesan)
+    
+def menu_hapus_produk():
+    print("\n=== Hapus Produk ===")
+    kode = input("Kode produk yang akan dihapus: ")
+    nama = produk.ambil_nama_produk(kode)
+    
+    if nama is None:
+        print(f"Produk dengan kode '{kode.strip()}' tidak ditemukan")
+        return
+    
+    # Tampilkan nama dulu, lalu minta konfirmasi sebelum benar-benar dihapus
+    konfirmasi = input(f"Hapus produk '{nama}'? (y/n): ").strip().lower()
+    if konfirmasi == "y":
+        _, pesan = produk.hapus_produk(kode)
+        print(pesan)
+    else:
+        print("Penghappusan dibatalkan.")
+        
+        

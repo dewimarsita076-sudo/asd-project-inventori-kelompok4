@@ -183,3 +183,4 @@ def update_harga_produk(kode_produk, harga_baru_teks):
         f"{format_rupiah(harga_lama)} menjadi {format_rupiah(harga_baru)}"
     )
     return True, pesan_sukses
+
