@@ -128,6 +128,30 @@ def tampilkan_semua_produk():
     return "\n".join(hasil)
 
 # ---------------------------------------------------------------------------
+# F3: Cari produk berdasarkan kode
+# ---------------------------------------------------------------------------
+def cari_by_kode(kode):
+    """Cari 1 produk dengan kode persis sama. Return teks hasil untuk F3."""
+    kode = kode.strip()
+    if not kode:
+        return "Kata kunci tidak boleh kosong."
+    index = cari_index_by_kode(kode)
+    if index == -1:
+        return f"Produk dengan kode '{kode}' tidak ditemukan."
+    return "Ditemukan 1 produk:\n" + buat_tabel([daftar_produk[index]])
+ 
+ 
+def cari_by_nama(kata_kunci):
+    """Cari semua produk yang namanya mengandung kata kunci (partial match)."""
+    kata_kunci = kata_kunci.strip()
+    if not kata_kunci:
+        return "Kata kunci tidak boleh kosong."
+    hasil = [p for p in daftar_produk if kata_kunci.casefold() in p["nama"].casefold()]
+    if not hasil:
+        return f"Produk dengan nama '{kata_kunci}' tidak ditemukan."
+    return f"Ditemukan {len(hasil)} produk:\n" + buat_tabel(hasil)
+
+# ---------------------------------------------------------------------------
 # F4: Update stok produk
 # ---------------------------------------------------------------------------
 def update_stok_produk(kode, stok_baru):
