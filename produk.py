@@ -1,4 +1,6 @@
+# ===========================================================================
 # Array of Struct: seluruh produk disimpan di sini
+# ===========================================================================
 daftar_produk = []
 
 # ---------------------------------------------------------------------------
@@ -48,50 +50,15 @@ def cari_index_by_kode(kode):
     return -1
 
 # ---------------------------------------------------------------------------
-# F1: Tambah produk
+# Fungsi bantu membuat tabel (Untuk F2 dan F3)
 # ---------------------------------------------------------------------------
-def tambah_produk(kode_produk, nama, kategori, harga, stok):
-    kode = kode_produk.strip()
-    nama = nama.strip()
-    kategori = kategori.strip()
-    
-    if not kode:
-        return False, "Kode produk tidak boleh kosong"
-    if cari_index_by_kode(kode) != -1:
-        return False, f"Kode produk '{kode}' sudah digunakan"
-    if not nama:
-        return False, "Nama produk tidak boleh kosong"
-    if not kategori:
-        return False, "Kategori tidak boleh kosong"
-    
-    harga, error = parse_harga(harga)
-    if error:
-        return False, error
-    stok, error = parse_stok(stok)
-    if error:
-        return False, error
-    
-    daftar_produk.append({
-        "kode_produk": kode,
-        "nama": nama,
-        "kategori": kategori,
-        "harga": harga,
-        "stok": stok,
-    })
-    return True, f"Produk {nama} berhasil ditambahkan."
-
-
-# ---------------------------------------------------------------------------
-# F2: Tampilkan semua produk
-# ---------------------------------------------------------------------------
-def tampilkan_semua_produk():
-    """Return string tabel semua produk, atau pesan jika data kosong."""
-    if not daftar_produk:
+def buat_tabel(data_produk):
+    """Menerima list of dict, mengembalikan string tabel yang rapi."""
+    if not data_produk:
         return "Belum ada produk yang tersimpan."
 
-    # Siapkan baris data (sudah dalam bentuk teks)
     baris = []
-    for no, p in enumerate(daftar_produk, start=1):
+    for no, p in enumerate(data_produk, start=1):
         baris.append((
             str(no),
             p["kode_produk"],
@@ -128,10 +95,81 @@ def tampilkan_semua_produk():
     return "\n".join(hasil)
 
 # ---------------------------------------------------------------------------
-# F3: Cari Produk
+# F1: Tambah produk
 # ---------------------------------------------------------------------------
+def tambah_produk(kode_produk, nama, kategori, harga, stok):
+    kode = kode_produk.strip()
+    nama = nama.strip()
+    kategori = kategori.strip()
+    
+    if not kode:
+        return False, "Kode produk tidak boleh kosong"
+        
+    # --- Tambah VALIDASI BARU: Hanya boleh Huruf Besar dan Angka ---
+    # Cek setiap karakter di dalam kode. 
+    # Jika ada karakter yang BUKAN huruf besar DAN BUKAN angka, maka tolak.
+    if not all(c.isupper() or c.isdigit() for c in kode):
+        return False, "Kode produk hanya boleh berisi HURUF BESAR dan ANGKA (contoh: PRD001)."
+    # --------------------------------------------------------
 
+    if cari_index_by_kode(kode) != -1:
+        return False, f"Kode produk '{kode}' sudah digunakan"
+    if not nama:
+        return False, "Nama produk tidak boleh kosong"
+    if not kategori:
+        return False, "Kategori tidak boleh kosong"
+    
+    harga, error = parse_harga(harga)
+    if error:
+        return False, error
+    stok, error = parse_stok(stok)
+    if error:
+        return False, error
+    
+    daftar_produk.append({
+        "kode_produk": kode,
+        "nama": nama,
+        "kategori": kategori,
+        "harga": harga,
+        "stok": stok,
+    })
+    return True, f"Produk {nama} berhasil ditambahkan."
 
+# ---------------------------------------------------------------------------
+# F2: Tampilkan semua produk
+# ---------------------------------------------------------------------------
+def tampilkan_semua_produk():
+    """Return string tabel semua produk, atau pesan jika data kosong."""
+    return buat_tabel(daftar_produk)
+
+# ---------------------------------------------------------------------------
+# F3: Cari produk
+# ---------------------------------------------------------------------------
+def cari_by_kode(kode):
+    """Cari 1 produk dengan kode persis sama. Return teks hasil untuk F3."""
+    kode = kode.strip()
+    if not kode:
+        return "Kata kunci tidak boleh kosong."
+    
+    index = cari_index_by_kode(kode)
+    if index == -1:
+        return f"Produk dengan kode '{kode}' tidak ditemukan."
+        
+    return "Ditemukan 1 produk:\n" + buat_tabel([daftar_produk[index]])
+ 
+ 
+def cari_by_nama(kata_kunci):
+    """Cari semua produk yang namanya mengandung kata kunci (partial match)."""
+    kata_kunci = kata_kunci.strip()
+    if not kata_kunci:
+        return "Kata kunci tidak boleh kosong."
+        
+    hasil = [p for p in daftar_produk if kata_kunci.casefold() in p["nama"].casefold()]
+    
+    if not hasil:
+        return f"Produk dengan nama '{kata_kunci}' tidak ditemukan."
+        
+    return f"Ditemukan {len(hasil)} produk:\n" + buat_tabel(hasil)
 
 # ---------------------------------------------------------------------------
 # F4: Update stok produk
@@ -154,12 +192,18 @@ def update_stok_produk(kode, stok_baru):
     produk = daftar_produk[index]
     stok_lama = produk["stok"]
     nama = produk["nama"]
+
+    # --- VALIDASI BARU: Stok baru tidak boleh sama dengan stok lama ---
+    if stok_baru == stok_lama:
+        return False, f"Gagal update: Stok baru ({stok_baru}) sama dengan stok saat ini. Tidak ada perubahan."
+
+    # Lanjut update jika nilainya berbeda
     produk["stok"] = stok_baru
 
     return True, f"Stok produk {nama} berhasil diperbarui: {stok_lama} menjadi {stok_baru}"
 
 # ---------------------------------------------------------------------------
-# Fitur 5: Update harga produk
+# F5: Update harga produk
 # ---------------------------------------------------------------------------
 def update_harga_produk(kode_produk, harga_baru_teks):
     """
@@ -168,6 +212,9 @@ def update_harga_produk(kode_produk, harga_baru_teks):
     """
     kode = kode_produk.strip()
     
+    if not kode:
+        return False, "Kode produk tidak boleh kosong"
+        
     # 1. Validasi keberadaan kode produk
     index = cari_index_by_kode(kode)
     if index == -1:
@@ -198,7 +245,7 @@ def ambil_nama_produk(kode):
     index = cari_index_by_kode(kode)
     if index == -1:
         return None
-    return daftar_produk[index]["Nama"]
+    return daftar_produk[index]["nama"]
 
 def hapus_produk(kode):
     """Hapus produk dari list. Return (sukses, pesan)."""
