@@ -51,4 +51,49 @@ def menu_hapus_produk():
     else:
         print("Penghappusan dibatalkan.")
         
+def tampilkan_menu():
+    print("\n" + "=" * 40)
+    print("   SISTEM MANAJEMEN TOKO / IVENTORI")
+    print("=" * 40)
+    print("1. Tambah produk baru")
+    print("2. Tampilkan semua produk")
+    print("3. Cari produk")
+    print("4. Update tok produk")
+    print("5. Update harga produk")
+    print("6. Hapus produk")
+    print("0. Keluar")
+    print("-" * 40)
         
+def main():
+    # Pilihan menu dipetakan ke fungsinya masing-masing
+    aksi_menu = {
+        "1": menu_tambah_produk,
+        "2": menu_tampilkan_semua,
+        "3": menu_cari_produk,
+        "4": menu_update_stok,
+        "5": menu_update_harga,
+        "6": menu_hapus_produk,
+    }
+    
+    while True:
+        tampilkan_menu()
+        try:
+            pilihan = input("Pilih menu (0-6): ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\nProgram dihentikan")
+            break
+        
+        if pilihan == "0":
+            print("Terima kasih. Data produk tidak disimpan permanen")
+            break
+        elif pilihan in aksi_menu:
+            try:
+                aksi_menu[pilihan]()
+            except (EOFError, KeyboardInterrupt):
+                print("\nProses dibatalkan")
+        else:
+            print("Pilihan tidak vvalid. Masukan angka 0 sampai 6")
+            
+if __name__ == "__main__":
+    main()    
+            

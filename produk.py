@@ -51,7 +51,7 @@ def cari_index_by_kode(kode):
 # F1: Tambah produk
 # ---------------------------------------------------------------------------
 def tambah_produk(kode_produk, nama, kategori, harga, stok):
-    kode = kode.strip()
+    kode = kode_produk.strip()
     nama = nama.strip()
     kategori = kategori.strip()
     
@@ -126,6 +126,12 @@ def tampilkan_semua_produk():
     hasil = [format_baris(header), garis]
     hasil.extend(format_baris(b) for b in baris)
     return "\n".join(hasil)
+
+# ---------------------------------------------------------------------------
+# F3: Cari Produk
+# ---------------------------------------------------------------------------
+
+
 
 # ---------------------------------------------------------------------------
 # F4: Update stok produk
