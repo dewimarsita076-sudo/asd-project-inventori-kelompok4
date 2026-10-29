@@ -104,13 +104,6 @@ def tambah_produk(kode_produk, nama, kategori, harga, stok):
     
     if not kode:
         return False, "Kode produk tidak boleh kosong"
-        
-    # --- Tambah VALIDASI BARU: Hanya boleh Huruf Besar dan Angka ---
-    # Cek setiap karakter di dalam kode. 
-    # Jika ada karakter yang BUKAN huruf besar DAN BUKAN angka, maka tolak.
-    if not all(c.isupper() or c.isdigit() for c in kode):
-        return False, "Kode produk hanya boleh berisi HURUF BESAR dan ANGKA (contoh: PRD001)."
-    # --------------------------------------------------------
 
     if cari_index_by_kode(kode) != -1:
         return False, f"Kode produk '{kode}' sudah digunakan"
@@ -140,6 +133,8 @@ def tambah_produk(kode_produk, nama, kategori, harga, stok):
 # ---------------------------------------------------------------------------
 def tampilkan_semua_produk():
     """Return string tabel semua produk, atau pesan jika data kosong."""
+    # buat_table() sudah menangani kondisi kosong ("Belum ada produk yang tersimpan.")
+    # dan dipakai bersama oleh F3 agar format tampilan sama.
     return buat_tabel(daftar_produk)
 
 # ---------------------------------------------------------------------------
@@ -192,10 +187,6 @@ def update_stok_produk(kode, stok_baru):
     produk = daftar_produk[index]
     stok_lama = produk["stok"]
     nama = produk["nama"]
-
-    # --- VALIDASI BARU: Stok baru tidak boleh sama dengan stok lama ---
-    if stok_baru == stok_lama:
-        return False, f"Gagal update: Stok baru ({stok_baru}) sama dengan stok saat ini. Tidak ada perubahan."
 
     # Lanjut update jika nilainya berbeda
     produk["stok"] = stok_baru
