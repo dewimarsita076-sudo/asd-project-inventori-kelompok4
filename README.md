@@ -4,10 +4,10 @@ Program ini dirancang untuk inventori toko dengan memudahkan mengelola data prod
 1. Nama & Anggota Kelompok
 Nama sistem: Sistem Manajemen Toko / Inventori Kelompok: Kelompok 4
 
-1	Dewi Marsita - 25083000076 (@dewimarsita076-sudo)
-2	Rangga Ramadhani - 25083000064 (@RanggaMldhn)
-3	Moh. Rozan Istazada Firdausy - 25083000060 (@PeachyFizzz)
-4	Ahmad Budi Setiawan - 25083000046 (@AhmadBudi227)
+1	Dewi Marsita - 25083000076 (@dewimarsita076-sudo) 
+2	Rangga Ramadhani - 25083000064 (@RanggaMldhn) 
+3	Moh. Rozan Istazada Firdausy - 25083000060 (@PeachyFizzz) 
+4	Ahmad Budi Setiawan - 25083000046 (@AhmadBudi227) 
 5 Arbi Maulana - 25083000070 (@Kyrbibot)
 
 2. Deskripsi sistem
